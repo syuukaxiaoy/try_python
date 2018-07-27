@@ -22,7 +22,7 @@ for name in catsNames:
 
 #添加值 append() 和  insert()
 #添加到末尾
-spam = ['cat','dog','bat']
+spam = ['cats','dogs','bats']
 spam.append('moose')
 print(spam)
 spam.insert(1,'chicken')
