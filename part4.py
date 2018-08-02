@@ -63,3 +63,16 @@ bacon = copy.deepcopy(apple) # 复制内置列表
 bacon[0] = 'oh'
 print(apple)
 print(bacon)
+
+# pandas 直接修改列名
+df.columns = ['a','b','cc','fg']
+
+#分类 groupby
+dfg = df.groupby('cc')
+
+#查看结果
+dfg.groups
+
+#groupby 以后取出类别
+dfg.get_group("cats")  #cats 是 cc列下的数据
+
