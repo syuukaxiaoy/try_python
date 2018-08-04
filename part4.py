@@ -76,3 +76,43 @@ dfg.groups
 #groupby 以后取出类别
 dfg.get_group("cats")  #cats 是 cc列下的数据
 
+#commaCoda
+import copy
+def comma(list):
+    n = len(list)
+    newlist = copy.copy(list)
+    newlist[-1] = 'and ' + newlist[-1]
+    for i in newlist:
+       print(i + ',',end='')
+
+def test():
+    spam = ['apples','bananas','tofu','cats']
+    comma(spam)
+test()
+
+#圖圖
+import copy
+def gridpic():
+    grid = [['.', '.', '.', '.', '.', '.'],
+            ['.', 'O', 'O', '.', '.', '.'],
+            ['O', 'O', 'O', 'O', '.', '.'],
+            ['O', 'O', 'O', 'O', 'O', '.'],
+            ['.', 'O', 'O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O', 'O', '.'],
+            ['O', 'O', 'O', 'O', '.', '.'],
+            ['.', 'O', 'O', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.']]
+    copyg = copy.copy(grid)
+    r = len(grid)
+    c = len(grid[0])
+    x = 0
+    y = 0
+    for x in range(c): #行
+        if x < c:
+            for y in range(r): #列
+                if y < r:
+                    print(copyg[y][x],end=' ')
+                    y += 1
+        print('\n')
+        x += 1
+gridpic()
