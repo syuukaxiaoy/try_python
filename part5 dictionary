@@ -1,0 +1,71 @@
+# 字典没有顺序，不可切片
+#任意值可以作为‘键’
+
+#保存朋友的生日！
+birthdays = {'Alice': 'Apr 1','Bob': 'Dec 12','Carol': 'Mar 4'}
+
+while True:
+    print('Enter a name: (blank to quit)')
+    name = input()
+    if name == '':
+        break
+
+    if name in birthdays:
+        print(birthdays[name] + ' is the birthday of ' + name)
+    else:
+        print('I do not have the information for ' + name)
+        print('What is their birthday?')
+
+        bday = input()
+        birthdays[name] = bday
+        print('Brithday database updated.')
+        
+#key(),values(),items()方法 返回键，值，键-值对
+#格式为dict_keys,dict_values,dict_items！！！
+spam = {'color':'red','age':'42'}
+for v in spam.values():
+    print(v)
+for k in spam.keys():
+    print(k)
+for i in spam.items():
+    print(i)
+for ke, va in spam.items(): #多重赋值
+    print('key: ' + ke,'value: '+ va)
+
+list(spam.keys()) #可以返回列表值
+    
+#检查是否存在键，值
+spam = {'color':'red','age':'42'}
+print('color' in spam.keys())
+print('42' in spam.values())
+print('name' in spam) #简写版
+print('name' not in spam)
+
+#get()方法：参数1--要取得其值的键，参数2--该键不存在时返回的备用值
+spam = {'color':'red','age':'42'}
+print('I am ' + str(spam.get('age',0)) + ' years old.')
+print('I am a ' + str(spam.get('sex','boy')) + '.')
+
+#类似于
+if 'name' not in spam:
+    spam['name'] = 'Bob'
+print(spam)
+
+#setdefault()方法
+print(spam.setdefault('name','Bob'))
+print(spam.setdefault('age',20))
+
+#characterCount
+message = 'It was a bright cold day in April, and the clockes were striking thirteen.'
+count = {}
+for character in message:
+    count.setdefault(character,0)
+    count[character] += 1
+pprint.pprint(count) #键排过序， 字典本身包含嵌套列表或字典
+
+#pprint.pformat()
+# 等价上面，可以得到文本作为字符串
+print(pprint.pformat(count))
+
+
+
