@@ -67,5 +67,41 @@ pprint.pprint(count) #键排过序， 字典本身包含嵌套列表或字典
 # 等价上面，可以得到文本作为字符串
 print(pprint.pformat(count))
 
+#下棋模型！
+theBoard = {'t-L':' ','t-M':' ','t-R':' ',
+            'm-L':' ','m-M':' ','m-R':' ',
+            'l-L':' ','l-M':' ','l-R':' '}
+def printBoard(board):
+    print(board['t-L'] + '  |  ' + board['t-M'] + '|' + board['t-R'])
+    print(' - + - + - ')
+    print(board['m-L'] + '  |  ' + board['m-M'] + '|' + board['m-R'])
+    print(' - + - + - ')
+    print(board['l-L'] + '  |  ' + board['l-M'] + '|' + board['l-R'])
+
+turn = 'X'
+for i in range(9):
+    printBoard(theBoard) #打印棋盘
+    print('Turn for ' + turn + ' . Move on which space?')
+    move = input()  #获取当前棋手想法
+    theBoard[move] = turn  #更新棋盘
+    if turn == 'X':   #下一个棋手
+        turn = 'O'
+    else:
+        turn = 'X'
+printBoard(theBoard)
 
 
+# 统计礼物~~~
+allGuest = {'Alice':{'apples':5,'pretzels':12},
+            'Bob':{'ham sandwiches':3, 'apples':2},
+            'Carol':{'cups':3,'apple pies':1}}
+def totalBrought(guests, item):
+    numBrought = 0
+    for k, v in guests.items():
+        numBrought += v.get(item,0)
+    return numBrought
+
+print('Number of things being brought:')
+print(' - Apples' + str(totalBrought(allGuest,'apples')))
+print(' - Cakes' + str(totalBrought(allGuest,'cakes')))
+print(' - Ham sandwiches' + str(totalBrought(allGuest, 'ham sandwiches')))
