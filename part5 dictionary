@@ -99,6 +99,9 @@ def totalBrought(guests, item):
     numBrought = 0
     for k, v in guests.items():
         numBrought += v.get(item,0)
+        #print(k)
+        #print(v)   #查看各項
+        #print(guests.items())
     return numBrought
 
 print('Number of things being brought:')
