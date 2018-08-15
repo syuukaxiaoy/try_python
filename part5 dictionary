@@ -108,3 +108,45 @@ print('Number of things being brought:')
 print(' - Apples' + str(totalBrought(allGuest,'apples')))
 print(' - Cakes' + str(totalBrought(allGuest,'cakes')))
 print(' - Ham sandwiches' + str(totalBrought(allGuest, 'ham sandwiches')))
+
+
+#統計游戲物品清單
+stuff = {'rope':1,'torch':6,'gold coin':42,'dagger':1,'arrow':12}
+
+def displayInventory(inventory):
+    print('Inventory :')
+    items_total = 0
+    for k,v in inventory.items():
+        print(str(v) + ' ' + k)
+        items_total += v
+    print('Total number of items: ' + str(items_total))
+
+displayInventory(stuff)
+
+def addToInventory(inventory, addItems):
+    #boss的物品字典
+    boss_bag = {}
+    for add in addItems:
+        boss_bag.setdefault(add,0)
+        boss_bag[add] += 1
+    #將新的物品加入到字典
+    for i in boss_bag:
+        if i in inventory:
+            boss_bag[i] += inventory[i]
+        else:
+            boss_bag.setdefault(i,0)
+    #討論原有的物品
+    for k in inventory:
+        if k not in boss_bag.keys():
+            boss_bag.setdefault(k,0)
+            boss_bag[k] += 1
+    return boss_bag
+def displayInventory(inv):
+    print('Newing!')
+    for k,v in inv.items():
+        print(str(v) + ' ' + k)
+
+inv = {'gold coin':42,'rope':1}
+dragonLoot = {'gold coin','dagger','gold coin','gold coin','ruby'}
+inv = addToInventory(inv,dragonLoot)
+displayInventory(inv)
