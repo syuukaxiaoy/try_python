@@ -1,0 +1,64 @@
+# 原始字符串
+print(r'That is Carol\'s cat.')
+
+# 三重引号的多行字符串
+print('''Dear Alice,
+Eve's cat is so cute!
+Sincerely,
+Bob''')
+
+#多行注释
+"""This is a test Python program.
+
+This program was desiged for Pyhtnon 3, not Python 2.
+"""
+#字符串的方法们~
+#upper()  lower()  isupper()  islower()
+spam = 'Hello world!'
+spam = spam.upper()
+print(spam)
+
+print('How are you?')
+feeling = input()
+if feeling.lower() == 'great':
+    print('I feel great too.')
+else:
+    print('I hope the rest of your day is good.')
+    
+print('abc123'.islower())
+print('12345'.islower())
+print('HEY'.isupper())
+
+print('Hey'.upper())
+print('Hey'.upper().lower())
+
+print('apple'.isalpha())
+print('apple123'.isalnum())
+print('12345'.isdecimal())
+print(' '.isspace())
+print('This Is A Story About Pigs.'.istitle())
+
+#用戶名 and 密碼
+while True:
+    print('Enter your age.')
+    age = input()
+    if age.isdecimal():
+        break
+    print('Please enter a number for your age.')
+
+while True:
+    print('Select a new password.(Number and letters only.)')
+    password = input()
+    if password.isalnum():
+        break
+    print('Passwords can only have letters and numbers.')
+    
+    print('apple'.startswith('app'))
+print('apple123'.endswith('123'))
+print(','.join(['My','name','is','miffy!']))
+print('My name is miffy!'.split())
+
+#对齐文本
+print('hello'.rjust(10))
+print('hello'.ljust(20))
+print('hello'.center(20,'+'))
