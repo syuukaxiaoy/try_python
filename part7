@@ -1,0 +1,104 @@
+#About REGEX
+#引入正则表达式模块
+import re 
+
+#用re.compile()函数创建Regex对象（使用原始字符串）
+pnregx = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d') 
+
+#向Regex传入想查找的字符串。它返回一个match对象
+mo = pnregx.search('My number is 415-555-4242.') 
+
+#调用Match对象的group()方法，返回世纪匹配文本的字符串
+print('Number is :' + mo.group())  
+
+#1括号分组
+pnregx = re.compile(r'(\d\d\d)-(\d\d\d-\d\d\d\d)')
+mo = pnregx.search('My number is 415-555-4242.')
+print(mo.group(0), '\n', mo.group(1), '\n', mo.group(2), '\n', mo.groups()) #一次获得多个分组groups（）
+
+#管道匹配  |
+heroregex = re.compile(r'Batman|Tina Fey')
+mo1 = heroregex.search('Batman and Tina man.')
+print(mo1.group())  #匹配第一次出现的文本作为match的返回对象
+
+batregex = re.compile(r'Bat(man|mobile|copter|bat)')
+mo = batregex.search('Batman lost a wheel')
+print(mo.group(),mo.group(1))
+
+# ? 实现可选匹配
+batregex = re.compile(r'Bat(wo)?man')
+mo = batregex.search('The Adventures of Batwoman')
+print(mo.group())
+
+pnregx = re.compile(r'(\d\d\d-)?\d\d\d-\d\d\d\d')
+mo = pnregx.search('My number is 415-555-4242.')
+moo = pnregx.search('My number is 222-2323')
+print(mo.group())
+print(moo.group())
+
+
+# * 实现0次或多次匹配
+batregex = re.compile(r'Bat(wo)*man')
+mo = batregex.search('The Adventures of Batwowowowoman')
+print(mo.group())
+
+# + 一次或多次
+batregex = re.compile(r'Bat(wo)+man')
+mo = batregex.search('The Adventures of Batwowowowoman')
+print(mo.group())
+moo = batregex.search('The Adventures of Batman')
+print(moo == None)
+
+# {}指定次数
+ha = re.compile(r'(Ha){3,5}')
+mo1 = ha.search('HaHaHaHa')
+print(mo1.group())
+
+# 贪心和非贪心
+ha = re.compile(r'(Ha){3,5}?') #非贪心匹配了最低次数 3次
+mo1 = ha.search('HaHaHaHa')
+print(mo1.group())
+
+# findall()方法
+pnregx = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')  #无分组  返回字符串列表
+print(pnregx.findall('My number is 415-555-4242 and worknum is 233-222-2323'))
+
+pnregx = re.compile(r'(\d\d\d)-(\d\d\d)-(\d\d\d\d)')  #有分组  返回字符串元组列表
+print(pnregx.findall('My number is 415-555-4242 and worknum is 233-222-2323'))
+
+
+# \d
+# \D
+# \w
+# \W
+# \s
+# \S
+
+# [ ] 自定义字符分类
+vregex = re.compile(r'[aeiouAEIOU]')
+print(vregex.findall('RpooboCOp eats baBy food. BayBy FOOD.'))
+vregex = re.compile(r'[^aeiouAEIOU]')  #非aeiouAEIOU
+print(vregex.findall('RpooboCOp eats baBy food. BayBy FOOD.'))
+
+# ^ 以oo开始  $ 以oo结尾的字符串
+beginwithhello = re.compile(r'^Hello')
+print(beginwithhello.search('Hello world!'))
+endwithnum = re.compile(r'\d$')
+print(endwithnum.search('Your number is 23'))
+wholenum = re.compile(r'^\d+$')
+print(wholenum.search('23232323'))
+
+# . 通配 字符  除了换行以外任何
+# .* 匹配所有 字 符 串
+# .* 传入re.DOTALL 参数匹配所有字符 包括换行
+newline = re.compile(r'.*',re.DOTALL)
+print(newline.search('Serve the public trust.\nProducts the innocent.\nUphold the law.').group())
+
+
+# re.I / re.IGNORECASE 忽略大小写
+# sub() 替换字符串
+agentname = re.compile(r'Agent (\w)\w*')
+print(agentname.sub(r'\1****','Agent ALice told Agent Carol that Agent Eve knew Agent Bob was a double agent.'))
+
+# 组合使用参数 |
+someRegexValue = re.compile('foo',re.I | re.DOTALL | re.VERBOSE) # re.VERBOSE编写注释
