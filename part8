@@ -1,0 +1,42 @@
+import os
+print(os.getcwd())
+#os.makedirs('C:\\Users\\19156\\PycharmProjects\\untitled3\\wow')
+print(os.path.abspath('.'))
+print(os.path.abspath('.\\wow'))
+print(os.path.isabs('.'))
+print(os.path.isabs(os.path.abspath('.')))
+print(os.path.relpath('C:\\Users'))
+path = 'C:\\Users\\19156\\PycharmProjects\\untitled3\\wow'
+os.path.split(path)
+os.path.getsize('C:\\Users')
+os.listdir('C:\\Users')
+os.path.exists(path)
+os.path.isdir(path)
+os.path.isfile('C:\\Users\\19156\\PycharmProjects\\untitled3')
+os.path.isdir('C:\\Users')
+# 讀寫文件
+baconfile = open('bancon.txt','w')
+baconfile.write('Hello World!\n')
+baconfile.close()
+baconfile = open('bacon.txt','a')
+baconfile.write('Bacon is not a vegetable.')
+baconfile.close()
+baconfile = open('bacon.txt')
+content = baconfile.read()
+baconfile.close()
+print(content)
+
+#shelve 保持變量
+import shelve
+shelfile = shelve.open('mydata')
+cats = ['Zophie','Pooka','Simon']
+shelfile['cats'] = cats
+shelfile.close()
+
+#pprint.pformat()保存變量
+import pprint
+cats = [{'name':'zopp','desc':'chubby'},{'name':'pooka','desc':'fluffy'}]
+pprint.pformat(cats)
+fileobj = open('mycat.py','w')
+fileobj.write('cats = ' + pprint.pformat(cats) + '\n')
+fileobj.close()
