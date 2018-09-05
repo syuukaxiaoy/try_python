@@ -1,0 +1,89 @@
+CREATE TABLE #創建新表
+DROP TABLE #刪除
+SELECT #查詢
+#1
+SELECT *
+ FROM orders
+LIMIT 10; #限定前10行
+
+SELECT occurred_at,account_id,channel
+FROM web_events
+LIMIT 15;
+#2
+# ORDER BY 语句始终在 SELECT 和 FROM 语句之后，但位于 LIMIT 语句之前
+# ORDER BY 语句中的列之后添加 DESC，然后按降序排序，默认按升序
+# LIMIT 语句始终显示在最后
+
+SELECT id, account_id, total_amt_usd
+FROM orders
+ORDER BY total_amt_usd DESC
+LIMIT 5;
+
+#可以一次 ORDER BY 多列。这个语句可以按照从左至右列出的列进行排序。也可以翻过来使用 DESC
+SELECT *
+FROM orders
+ORDER BY occurred_at DESC,total_amt_usd DESC
+LIMIT 5;
+
+#WHERE 语句来为表格创建子集
+>（大于）
+<（小于）
+>=（大于或等于）
+<=（小于或等于）
+=（等于）
+!=（不等于）
+SELECT *
+FROM orders
+WHERE gloss_amt_usd>=1000
+LIMIT 5;
+
+#WHERE 语句与非数字数据
+# = , ！= 运算符,确保在文本数据中使用引号
+# LIKE、NOT 或 IN 运算符
+SELECT name,website,primary_poc
+FROM accounts
+WHERE name='Exxon Mobil';
+
+#LIKE 语句
+SELECT name
+FROM accounts
+WHERE name LIKE 'C%'; #以C 開頭
+
+SELECT name
+FROM accounts
+WHERE name LIKE '%one%'; # 包含 one
+
+SELECT name
+FROM accounts
+WHERE name LIKE '%s'; #s 結尾
+
+# IN 語句
+SELECT name, primary_poc, sales_rep_id
+FROM accounts
+WHERE name IN ('Walmart', 'Target', 'Nordstrom');
+
+#AND 运算符用于 WHERE 语句中，用于一次考虑多个逻辑子句
+SELECT *
+FROM orders
+WHERE standard_qty>1000 AND poster_qty=0 AND gloss_qty=0;
+
+SELECT name
+FROM accounts
+WHERE name NOT LIKE 'C%' AND name LIKE '%s';
+
+SELECT *
+FROM web_events
+WHERE channel IN ('organic','adwords') AND
+occurred_at BETWEEN '2016-01-01' AND '2017-01-01'
+ORDER BY occurred_at DESC;
+
+#OR 語句
+SELECT *
+FROM orders
+WHERE standard_qty=0 AND (gloss_qty>1000 OR poster_qty>1000);
+
+SELECT *
+FROM accounts
+WHERE (name LIKE 'C%' OR name LIKE 'W%')
+            AND ((primary_poc LIKE '%ana%' OR primary_poc LIKE '%Ana%')
+            AND (primary_poc NOT LIKE '%eana%'));
