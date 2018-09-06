@@ -87,3 +87,50 @@ FROM accounts
 WHERE (name LIKE 'C%' OR name LIKE 'W%')
             AND ((primary_poc LIKE '%ana%' OR primary_poc LIKE '%Ana%')
             AND (primary_poc NOT LIKE '%eana%'));
+
+#JOIN 語句
+SELECT orders.standard_qty,orders.gloss_qty,orders.poster_qty,
+       accounts.website,accounts.primary_poc
+FROM orders
+JOIN accounts
+ON orders.account_id = accounts.id;
+''''
+主键 (PK)
+主键是特定表格的唯一列。在我们的每个表格中是第一列，并且这些列都叫做 id，但是并非必须都要这样。
+通常，在大多数数据库中，主键是表格的第一列。
+外键 (FK)
+外键是另一个表格中的主键。
+#连接表格时，最好能为每个表格设置一个别名
+FROM tablename AS t1
+JOIN tablename2 AS t2
+
+''''
+SELECT accounts.name,accounts.primary_poc,web_events.occurred_at,web_events.channel
+FROM accounts
+JOIN web_events
+ON accounts.id = web_events.account_id
+WHERE name='Walmart';
+
+SELECT r.name region,s.name rep,a.name account
+FROM sales_reps s
+JOIN accounts a
+ON s.id = a.sales_rep_id
+JOIN region r
+ON r.id = s.region_id
+ORDER BY a.name;
+
+SELECT
+r.name regionname,
+a.name accname,
+o.total_amt_usd/(o.total+ 0.01) unitprice
+FROM accounts a
+JOIN orders o
+ON o.account_id = a.id
+JOIN sales_reps s
+ON s.id = a.sales_rep_id
+JOIN region r
+ON r.id = s.region_id;
+
+#JOIN - 一种 INNER JOIN，仅获取在两个表格中都存在的数据。
+#LEFT JOIN - 用于获取 FROM 中的表格中的所有行，即使它们不存在于 JOIN 语句中。
+#RIGHT JOIN - 用于获取 JOIN 中的表格中的所有行，即使它们不存在于 FROM 语句中。
