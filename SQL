@@ -134,3 +134,24 @@ ON r.id = s.region_id;
 #JOIN - 一种 INNER JOIN，仅获取在两个表格中都存在的数据。
 #LEFT JOIN - 用于获取 FROM 中的表格中的所有行，即使它们不存在于 JOIN 语句中。
 #RIGHT JOIN - 用于获取 JOIN 中的表格中的所有行，即使它们不存在于 FROM 语句中。
+
+
+#聚合 COUNT
+#NULL 与零不同，它们表示不存在数据的单元格
+#在 WHERE 条件中表示 NULL 时，成 IS NULL 或 IS NOT NULL 不使用 =
+
+SELECT COUNT(region.name)
+FROM region;
+
+# SUM
+#只能针对数字列使用 SUM
+#SUM 将忽略 NULL 值，其他聚合函数也是这样
+#注意：聚合函数只聚合列的值
+#如果对行进行计算，使用简单算术表达式
+
+SELECT SUM(standard_qty)
+FROM orders;
+
+#MIN 返回最小的数字、最早的日期,按字母表排序的最之前的非数字值
+#MAX 返回最大的数字、最近的日期,与“Z”最接近（按字母表顺序排列）的非数字值
+#AVG 返回数据的平均值
