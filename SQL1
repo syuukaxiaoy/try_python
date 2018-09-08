@@ -1,0 +1,89 @@
+# GROUP BY 語句
+#GROUP BY 可以用来在数据子集中聚合数据。例如，不同客户、不同区域或不同销售代表分组。
+#SELECT 语句中的任何一列如果不在聚合函数中，则必须在 GROUP BY 条件中。
+#GROUP BY 始终在 WHERE 和 ORDER BY 之间。
+#ORDER BY 有点像电子表格软件中的 SORT。
+#GROUP BY - 专家提示
+#SQL 在 LIMIT 条件之前评估聚合函数。如果不按任何列分组，则结果是 1 行
+#如果按照某列分组，该列中存在大量的唯一值，超出了 LIMIT 上限
+#则系统会照常计算聚合结果，但是结果中会忽略某些行。
+
+SELECT a.name,
+       o.occurred_at
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+ORDER BY o.occurred_at
+LIMIT 1;
+
+SELECT r.name,
+       COUNT(s.*) AS counts
+FROM region r
+JOIN sales_reps s
+ON r.id = s.region_id
+GROUP BY r.name
+ORDER BY counts;
+
+#可以同时按照多列分组（在大量不同的细分中更好地获得聚合结果）
+#ORDER BY 条件中列顺序有区别（从左到右）
+#GROUP BY 条件中的列名称顺序并不重要，结果还是一样的。
+#ORDER BY 和 GROUP BY 条件中用数字替换列名称（对大量的列分组）
+#任何不在聚合函数中的列必须显示 GROUP BY 语句！！！
+
+#DISTINCT 語句
+#看做仅返回特定列的唯一值的函数
+#在聚合函数中使用时，会让查询速度有所减慢
+
+#HAVING 語句
+#过滤被聚合的查询的 “整洁”方式，但通常用子查询的方式实现
+#對通过聚合创建的查询中的元素执行 WHERE 条件，就要用 HAVING
+
+#時間
+#DATE_TRUNC 能将日期截取到日期时间列的特定部分（常见的截取日期，月份，年份）
+#DATE_PART 可以用来获取日期的特定部分，但是注意获取 month 或 dow 意味着无法让年份按顺序排列
+#按照特定的部分分组，无论它们属于哪个年份
+#參考 https://www.postgresql.org/docs/9.1/static/functions-datetime.html
+
+SELECT DATE_PART('year', occurred_at) ord_year,  COUNT(*) total_sales
+FROM orders
+GROUP BY 1
+ORDER BY 2 DESC;
+
+SELECT DATE_TRUNC('month', o.occurred_at) ord_date, SUM(o.gloss_amt_usd) tot_spent
+FROM orders o
+JOIN accounts a
+ON a.id = o.account_id
+WHERE a.name = 'Walmart'
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 1;
+
+#CASE 语句
+#始终位于 SELECT 条件中
+#必须包含以下几个部分：WHEN、THEN 和 END
+#ELSE 是可选组成部分，用来包含不符合上述任一 CASE 条件的情况
+#可以在 WHEN 和 THEN 之间使用任何条件运算符编写任何条件语句（例如 WHERE， AND ， OR ）
+#可以再次包含多个 WHEN 语句以及 ELSE 语句，以便处理任何未处理的条件
+
+SELECT a.name,SUM(total_amt_usd) AS total,
+       CASE WHEN SUM(total_amt_usd)>200000 THEN 'great'
+            WHEN SUM(total_amt_usd)>100000 THEN 'median'
+            ELSE 'low' END AS leval
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+WHERE o.occurred_at > '2015-12-31'
+GROUP BY a.name
+ORDER BY 2 DESC;
+
+SELECT s.name,COUNT(*) AS nums,SUM(total_amt_usd) AS sales,
+       CASE WHEN COUNT(*)>200 OR SUM(total_amt_usd) >750000 THEN 'top'
+       WHEN COUNT(*)>150 OR SUM(total_amt_usd) >500000 THEN 'middle'
+            ELSE 'low' END AS leval
+FROM orders o
+JOIN accounts a
+ON o.account_id = a.id
+JOIN sales_reps s
+ON s.id = a.sales_rep_id
+GROUP BY s.name
+ORDER BY 3 DESC;
