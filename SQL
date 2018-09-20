@@ -155,3 +155,86 @@ FROM orders;
 #MIN 返回最小的数字、最早的日期,按字母表排序的最之前的非数字值
 #MAX 返回最大的数字、最近的日期,与“Z”最接近（按字母表顺序排列）的非数字值
 #AVG 返回数据的平均值
+
+
+#注意格式，簡潔易懂
+SELECT *
+FROM (SELECT DATE_TRUNC('day',occurred_at) AS day,
+                channel, COUNT(*) as events
+      FROM web_events
+      GROUP BY 1,2
+      ORDER BY 3 DESC) sub
+GROUP BY channel
+ORDER BY 2 DESC;
+
+#LEFT 从起点（或左侧）开始，从特定列中的每行获取一定数量的字符
+SELECT LEFT(UPPER(name), 1) AS first_letter, COUNT(*) num_companies
+FROM accounts
+GROUP BY 1
+ORDER BY 2 DESC;
+
+#RIGHT 从末尾（或右侧）开始，从特定列中的每行获取一定数量的字符
+SELECT RIGHT(website, 3) AS domain, COUNT(*) num_companies
+FROM accounts
+GROUP BY 1
+ORDER BY 2 DESC;
+
+SELECT SUM(num) nums, SUM(letter) letters
+FROM (SELECT name, CASE WHEN LEFT(UPPER(name), 1) IN ('0','1','2','3','4','5','6','7','8','9')
+                       THEN 1 ELSE 0 END AS num,
+         CASE WHEN LEFT(UPPER(name), 1) IN ('0','1','2','3','4','5','6','7','8','9')
+                       THEN 0 ELSE 1 END AS letter
+      FROM accounts) t1;
+
+#LENGTH 提供了特定列每行的字符数
+
+#POSITION 获取字符和列，并提供该字符在每行的索引。第一个位置的索引在 SQL 中是 1
+#POSITION(',' IN city_state) 获取逗号的索引
+#STRPOS和POSITION 提供的结果相同，但是语法不太一样，STRPOS(city_state, ‘,’)
+#注意，POSITION 和 STRPOS 都区分大小写，因此查找 A 的位置与查找 a 的结果不同
+#使用 LOWER 或 UPPER 让所有字符变成小写或大写
+
+SELECT LEFT(primary_poc, STRPOS(primary_poc, ' ') -1 ) first_name,
+RIGHT(primary_poc, LENGTH(primary_poc) - STRPOS(primary_poc, ' ')) last_name
+FROM accounts;
+
+#组合
+#CONCAT(first_name, ' ', last_name)
+#或者使用双竖线：first_name || ' ' || last_name
+
+WITH t1 AS (
+ SELECT LEFT(primary_poc,     STRPOS(primary_poc, ' ') -1 ) first_name,  RIGHT(primary_poc, LENGTH(primary_poc) - STRPOS(primary_poc, ' ')) last_name, name
+ FROM accounts)
+SELECT first_name, last_name, CONCAT(first_name, '.', last_name, '@', name, '.com')
+FROM t1;
+
+WITH t1 AS (
+ SELECT LEFT(primary_poc,     STRPOS(primary_poc, ' ') -1 ) first_name,  RIGHT(primary_poc, LENGTH(primary_poc) - STRPOS(primary_poc, ' ')) last_name, name
+ FROM accounts)
+SELECT first_name, last_name, CONCAT(first_name, '.', last_name, '@', name, '.com'), LEFT(LOWER(first_name), 1) || RIGHT(LOWER(first_name), 1) || LEFT(LOWER(last_name), 1) || RIGHT(LOWER(last_name), 1) || LENGTH(first_name) || LENGTH(last_name) || REPLACE(UPPER(name), ' ', '')
+FROM t1;
+
+#更改类型
+#TO_DATE
+#CAST()
+#::
+DATE_PART('month', TO_DATE(month, 'month'))
+CAST(date_column AS DATE)
+date_column::DATE
+
+SELECT date orig_date, (SUBSTR(date, 7, 4) || '-' || LEFT(date, 2) || '-' || SUBSTR(date, 4, 2)) new_date
+FROM sf_crime_data;
+
+#COALESCE 返回的是每行的第一个非 NULL 值
+SELECT COALESCE(a.id, a.id) filled_id, a.name, a.website, a.lat, a.long, a.primary_poc, a.sales_rep_id, o.*
+FROM accounts a
+LEFT JOIN orders o
+ON a.id = o.account_id
+WHERE o.total IS NULL;
+
+#删除
+TRIM 删掉字符串开头和末尾的字符
+
+#更多语法见以下链接
+https://www.postgresql.org/docs/8.1/static/functions-string.html
+http://www.postgresqltutorial.com/postgresql-cast/
