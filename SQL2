@@ -1,0 +1,29 @@
+#文本和字符串类型
+text — 任何长度的字符串，例如 Python str 或 unicode 类型
+
+char(n) — 长度为 n 个字符的字符串
+
+varchar(n) — 长度上限为 n 个字符的字符串
+
+数值类型
+integer — 整型值，例如 Python int
+
+real — 浮点型值，例如 Python float。精确到小数点后 6 位
+
+double precision — 精度更高的浮点型值。精确到小数点后 15 位
+
+decimal — 精确的十进制值
+
+日期和时间类型
+date — 日历日期，包括年月日
+
+time — 一天中的时间
+
+timestamp — 日期和时间相结合
+
+#insert into table ( column1, column2, ... ) values ( val1, val2, ... );
+#如果值和表格的列顺序一样（从第一列开始），则不需要在 insert 语句中指定列
+
+insert into table values ( val1, val2, ... );
+insert into animals
+values('brown','opossum','2018-09-20');
