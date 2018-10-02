@@ -5,3 +5,19 @@ x = [[1,2,3],[2,3,4],[6,9,8],[8,5,3]]
 y = [[2],[5],[67],[86]]
 print(inv(dot(transpose(x),y)))
 
+#选择目标使用 loc
+contig = d1.loc[d1['iso_d'].isin(iso)]
+ex = df.query('Trade_Flow == "Export"')
+
+#合并 视情况而定
+data = pd.merge(data,langu,on=['ISO'],how='left')
+
+df = pd.concat([d1,d2,d3,d4,d5],axis=0,ignore_index=True)
+
+#添加列名
+sd1.columns = ['Partner','Year','GDP']
+
+# 重命名
+df = df.rename(columns={'Trade Flow':'Trade_Flow',
+                        'Reporter ISO':'Reporter_ISO',
+                        'Trade Value (US$)':'Trade_Value_(US$)'})
